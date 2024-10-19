@@ -15,11 +15,14 @@ namespace UspgPOS.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewData["Layout"] = "_LayoutLogged"; // Layout para usuarios logueados
+            }
+            else
+            {
+                ViewData["Layout"] = "_Layout"; // Layout para usuarios no logueados
+            }
             return View();
         }
 
