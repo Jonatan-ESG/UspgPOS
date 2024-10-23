@@ -54,7 +54,7 @@ namespace UspgPOS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Nit,Correo")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("Nombre,Nit,Correo")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +102,7 @@ namespace UspgPOS.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClienteExists(cliente.Id))
+                    if (!ClienteExists(id))
                     {
                         return NotFound();
                     }

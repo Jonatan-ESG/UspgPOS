@@ -6,7 +6,7 @@ namespace UspgPOS.Models
     public class Cliente
     {
         [Column("id")]
-        public long Id { get; set; }
+        public long? Id { get; set; }
 
         [StringLength(255)]
         [Required]
@@ -22,6 +22,6 @@ namespace UspgPOS.Models
         [Column("correo")]
         public string Correo { get; set; }
 
-        public ICollection<Venta> Ventas { get; set;} // Relacion de uno a muchos
+        public ICollection<Venta>?x Ventas { get; set;} // Relacion de uno a muchos
     }
 }
