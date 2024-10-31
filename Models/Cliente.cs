@@ -22,6 +22,6 @@ namespace UspgPOS.Models
         [Column("correo")]
         public string Correo { get; set; }
 
-        public ICollection<Venta>?x Ventas { get; set;} // Relacion de uno a muchos
+        public ICollection<Venta> Ventas { get; set;} // Relacion de uno a muchos
     }
 }
