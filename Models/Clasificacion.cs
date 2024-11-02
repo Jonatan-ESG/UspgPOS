@@ -5,7 +5,7 @@ namespace UspgPOS.Models
     public class Clasificacion
     {
         [Column("id")]
-        public long? Id { get; set; }
+        public long Id { get; set; }
 
         [Column("nombre")]
         public string Nombre { get; set; }
