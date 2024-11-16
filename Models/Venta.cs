@@ -22,6 +22,7 @@ namespace UspgPOS.Models
         public Cliente? Cliente { get; set; } // Relacion de uno a uno
 
         public Sucursal? Sucursal { get; set; } // Relacion de uno a uno
+		public ICollection<DetalleVenta> DetallesVenta { get; set; }
 
-    }
+	}
 }
