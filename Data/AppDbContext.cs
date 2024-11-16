@@ -13,6 +13,7 @@ namespace UspgPOS.Data
         public DbSet<Sucursal> Sucursales { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Venta> Ventas { get; set; }
+        public DbSet<DetalleVenta> DetallesVenta { get; set; }
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Marca> Marcas { get; set; }
         public DbSet<Clasificacion> Clasificaciones { get; set; }
