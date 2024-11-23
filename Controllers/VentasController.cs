@@ -10,6 +10,7 @@ using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using UspgPOS.Data;
+using UspgPOS.DTOs;
 using UspgPOS.Models;
 
 namespace UspgPOS.Controllers
@@ -278,5 +279,50 @@ namespace UspgPOS.Controllers
 			return File(stream, "application/pdf", $"Factura_{id}.pdf");
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> CrearVenta([FromBody] VentaDTO ventaDto)
+		{
+			if (ventaDto == null || ventaDto.Detalles == null || !ventaDto.Detalles.Any()) {
+				return BadRequest("Datos de la venta invalidos");
+			}
+
+			var sucursalId = HttpContext.Session.GetString("SucursalId");
+			if (string.IsNullOrEmpty(sucursalId)) {
+				return BadRequest("No se encontró la sucursal en la sesión");
+			}
+
+			var cliente = await _context.Clientes.FindAsync(ventaDto.ClienteId);
+			if (cliente == null) {
+				return BadRequest("El cliente seleccionado no existe");
+			}
+
+			Venta nuevaVenta = new Venta
+			{
+				Fecha = DateTime.Now,
+				ClienteId = ventaDto.ClienteId,
+				SucursalId = long.Parse(sucursalId),
+				Total = ventaDto.Detalles.Sum(d => d.Cantidad * d.PrecioUnitario)
+			};
+
+			_context.Ventas.Add(nuevaVenta);
+			await _context.SaveChangesAsync();
+
+            foreach (DetalleVentaDTO detalleDto in  ventaDto.Detalles)
+            {
+				var detalle = new DetalleVenta
+				{
+					VentaId = nuevaVenta.Id.Value,
+					ProductoId = detalleDto.ProductoId,
+					Cantidad = detalleDto.Cantidad,
+					PrecioUnitario = detalleDto.PrecioUnitario
+				};
+
+				_context.DetallesVenta.Add(detalle);
+            }
+
+			await _context.SaveChangesAsync();
+
+			return Ok(new { VentaId = nuevaVenta.Id});
+		}
 	}
 }
